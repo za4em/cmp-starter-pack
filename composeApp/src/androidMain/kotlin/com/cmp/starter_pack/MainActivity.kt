@@ -1,4 +1,4 @@
-package com.starter_pack.cmp_starter_pack
+package com.cmp.starter_pack
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

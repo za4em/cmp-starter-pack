@@ -1,4 +1,4 @@
-package com.starter_pack.cmp_starter_pack
+package com.cmp.starter_pack
 
 interface Platform {
     val name: String
