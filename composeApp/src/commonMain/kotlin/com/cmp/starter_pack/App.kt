@@ -18,12 +18,20 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 import cmp_starter_pack.composeapp.generated.resources.Res
 import cmp_starter_pack.composeapp.generated.resources.compose_multiplatform
+import com.cmp.starter_pack.data.DataContainer
+import com.cmp.starter_pack.data.PlatformFactory
+import com.cmp.starter_pack.data.model.User
+import kotlinx.coroutines.launch
 
 @Composable
 @Preview
-fun App() {
+fun App(platformFactory: PlatformFactory) {
+    val dataContainer = remember { DataContainer(platformFactory.dataStore) }
+    val coroutineScope = rememberCoroutineScope()
+    val currentUser by dataContainer.userStorage.flow().collectAsState(null)
+
     MaterialTheme {
-        var showContent by remember { mutableStateOf(false) }
+        var showContent by remember { mutableStateOf(true) }
         Column(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.primaryContainer)
@@ -31,8 +39,17 @@ fun App() {
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Button(onClick = { showContent = !showContent }) {
-                Text("Click me!")
+            Button(
+                onClick = {
+                    coroutineScope.launch {
+                        val clickedUpdated = (currentUser?.clickedTimes ?: 0) + 1
+                        val userUpdated = currentUser?.copy(clickedTimes = clickedUpdated)
+                            ?: User(0, "Test", clickedUpdated)
+                        dataContainer.userStorage.update(userUpdated)
+                    }
+                },
+            ) {
+                Text("Click me, ${currentUser?.name ?: "Anon"}!")
             }
             AnimatedVisibility(showContent) {
                 val greeting = remember { Greeting().greet() }
@@ -41,7 +58,7 @@ fun App() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Image(painterResource(Res.drawable.compose_multiplatform), null)
-                    Text("Compose: $greeting")
+                    Text("Clicked: ${currentUser?.clickedTimes ?: 0}")
                 }
             }
         }

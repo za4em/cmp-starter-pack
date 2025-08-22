@@ -13,7 +13,7 @@ class InMemoryCache<PARAMS, DATA> : StoreCache<PARAMS, DATA> {
         return memory.mapNotNull { it[params] }
     }
 
-    override fun get(params: PARAMS): DATA? {
+    override suspend fun get(params: PARAMS): DATA? {
         return memory.value[params]
     }
 

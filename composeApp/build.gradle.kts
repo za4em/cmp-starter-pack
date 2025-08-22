@@ -42,6 +42,8 @@ kotlin {
 //            non-default dependencies
             implementation(libs.kotlinx.coroutines.core)
             implementation(libs.kotlin.serialization.json)
+            implementation(libs.androidx.datastore)
+            implementation(libs.androidx.datastore.preferences)
         }
         androidMain.dependencies {
             implementation(compose.preview)

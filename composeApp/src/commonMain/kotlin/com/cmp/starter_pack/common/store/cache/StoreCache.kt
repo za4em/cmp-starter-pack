@@ -6,7 +6,7 @@ interface StoreCache<PARAMS, DATA> {
 
     fun observe(params: PARAMS): Flow<DATA?>
 
-    fun get(params: PARAMS): DATA?
+    suspend fun get(params: PARAMS): DATA?
 
     suspend fun set(params: PARAMS, data: DATA)
 

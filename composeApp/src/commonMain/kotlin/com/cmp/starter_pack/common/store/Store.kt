@@ -37,7 +37,7 @@ open class Store<KEY : Any?, DATA>(
         }
     }
 
-    fun getCache(key: KEY): DATA? {
+    suspend fun getCache(key: KEY): DATA? {
         return cache.get(key)
     }
 

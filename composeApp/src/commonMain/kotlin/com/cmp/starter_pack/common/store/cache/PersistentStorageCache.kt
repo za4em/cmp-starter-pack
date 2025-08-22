@@ -12,7 +12,7 @@ open class PersistentStorageCache<PARAMS, DATA : @Serializable Any>(
         return storage.flow()
     }
 
-    override fun get(params: PARAMS): DATA? {
+    override suspend fun get(params: PARAMS): DATA? {
         return storage.valueOrNull()
     }
 

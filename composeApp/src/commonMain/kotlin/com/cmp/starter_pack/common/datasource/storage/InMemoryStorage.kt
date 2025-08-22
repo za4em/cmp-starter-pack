@@ -4,8 +4,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.serialization.Serializable
 
-abstract class InMemoryStorage<T>(val defaultValue: T? = null) : Storage<T> {
+abstract class InMemoryStorage<T : @Serializable Any>(val defaultValue: T? = null) : Storage<T> {
 
     private val mutableStateFlow: MutableStateFlow<T?> = MutableStateFlow(defaultValue)
 
@@ -13,15 +14,11 @@ abstract class InMemoryStorage<T>(val defaultValue: T? = null) : Storage<T> {
         return mutableStateFlow.asStateFlow()
     }
 
-    override fun stateFlow(): StateFlow<T?> {
-        return mutableStateFlow
-    }
-
     override suspend fun update(newValue: T?) {
         mutableStateFlow.emit(newValue)
     }
 
-    override fun valueOrNull(): T? {
+    override suspend fun valueOrNull(): T? {
         return mutableStateFlow.value
     }
 

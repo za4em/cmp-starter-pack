@@ -15,7 +15,7 @@ class NoOpCache<PARAMS, DATA> : StoreCache<PARAMS, DATA> {
             .map { (_, data) -> data }
     }
 
-    override fun get(params: PARAMS): DATA? {
+    override suspend fun get(params: PARAMS): DATA? {
         return null
     }
 
