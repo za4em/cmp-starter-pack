@@ -44,6 +44,11 @@ kotlin {
             implementation(libs.kotlin.serialization.json)
             implementation(libs.androidx.datastore)
             implementation(libs.androidx.datastore.preferences)
+            implementation(libs.bundles.decompose)
+            implementation(libs.bundles.coil)
+            implementation(libs.bundles.ktor)
+            implementation (libs.molecule)
+
         }
         androidMain.dependencies {
             implementation(compose.preview)

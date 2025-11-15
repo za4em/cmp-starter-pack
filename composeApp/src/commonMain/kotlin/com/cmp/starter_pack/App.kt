@@ -3,6 +3,7 @@ package com.cmp.starter_pack
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,20 +14,32 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import org.jetbrains.compose.resources.painterResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
-
 import cmp_starter_pack.composeapp.generated.resources.Res
 import cmp_starter_pack.composeapp.generated.resources.compose_multiplatform
+import com.cmp.starter_pack.common.designsystem.controllers.LocalAlertController
+import com.cmp.starter_pack.common.designsystem.theme.AppTheme
 import com.cmp.starter_pack.data.DataContainer
 import com.cmp.starter_pack.data.PlatformFactory
 import com.cmp.starter_pack.data.model.User
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
 fun App(platformFactory: PlatformFactory) {
     val dataContainer = remember { DataContainer(platformFactory.dataStore) }
+    AppTheme(isSystemInDarkTheme()) {
+        CompositionLocalProvider(
+            LocalAlertController provides dataContainer.alertController,
+        ) {
+            AppContent(dataContainer)
+        }
+    }
+}
+
+@Composable
+fun AppContent(dataContainer: DataContainer) {
     val coroutineScope = rememberCoroutineScope()
     val currentUser by dataContainer.userStorage.flow().collectAsState(null)
 
